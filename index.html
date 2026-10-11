@@ -1,0 +1,820 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Guía Panel Pro A7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: cabecera corta, pestañas en grilla 2x2 en teléfono, y en cada procedimiento el panel simulado junto a los pasos. */
+:root{
+  --font-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --font-body:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+
+  --bg:#eceff3;
+  --surface:#ffffff;
+  --ink:#14212e;
+  --muted:#53657a;
+  --line:#cbd4de;
+  --accent:#0d4a8f;
+  --sel-bg:#0b2a4a;
+  --sel-fg:#ffffff;
+  --ok:#1c7c3f;
+  --on-ok:#ffffff;
+  --note-bg:#fff1d6;
+  --seg-a:#0d4a8f;
+  --seg-b:#8db6e0;
+
+  /* Colores del dispositivo: son los mismos en ambos temas */
+  --d-edge:#aeb7c1;
+  --d-scr:#fbfcfd;
+  --d-ink:#1f2933;
+  --d-mute:#66737f;
+  --d-line:#d2d8de;
+  --d-red:#d62b2b;
+  --d-gold:#c99a3b;
+  --d-slate:#3c4a57;
+  --d-navy:#0f2a4d;
+  --d-blue:#1b4f8e;
+  --d-amber:#c8921c;
+  --d-green:#2fb457;
+  --d-hl:#0a84ff;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d151e; --surface:#16212d; --ink:#e8eef5; --muted:#9db0c4; --line:#2b3b4d;
+    --accent:#6fb0f5; --sel-bg:#6fb0f5; --sel-fg:#0b1a2b; --ok:#5ccb85; --on-ok:#08210f;
+    --note-bg:#2d2412; --seg-a:#6fb0f5; --seg-b:#2f5f8f; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d151e; --surface:#16212d; --ink:#e8eef5; --muted:#9db0c4; --line:#2b3b4d;
+  --accent:#6fb0f5; --sel-bg:#6fb0f5; --sel-fg:#0b1a2b; --ok:#5ccb85; --on-ok:#08210f;
+  --note-bg:#2d2412; --seg-a:#6fb0f5; --seg-b:#2f5f8f; color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font-body);padding-inline:16px;padding-block:24px 48px}
+.wrap{max-width:1080px;margin:0 auto}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button{font-family:inherit}
+
+header{padding-bottom:20px}
+h1{margin:0;font:700 clamp(2.25rem,7vw,3.5rem)/.95 var(--font-display);text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
+.lede{margin:10px 0 0;color:var(--muted);max-width:62ch}
+
+.tabs{display:grid;gap:16px}
+.tg{display:grid;gap:6px;min-width:0}
+.tgl{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.tgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.tab{display:flex;flex-direction:column;gap:2px;min-height:60px;padding:10px 14px;text-align:left;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:8px;cursor:pointer}
+.tab .t1{font-weight:600;font-size:1rem;line-height:1.2}
+.tab .t2{font-size:.8125rem;color:var(--muted);line-height:1.25}
+.tab[aria-selected="true"]{background:var(--sel-bg);color:var(--sel-fg);border-color:var(--sel-bg)}
+.tab[aria-selected="true"] .t2{color:inherit;opacity:.85}
+@media (max-width:980px){.tgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:560px){.tgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+[role="tabpanel"]{margin-top:28px}
+h2{margin:0 0 14px;font:700 1.75rem/1.05 var(--font-display);text-transform:uppercase;letter-spacing:.015em}
+h3{margin:0}
+
+.proc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,460px);gap:16px 40px;align-items:start}
+.stage{position:sticky;top:16px;min-width:0}
+.info{min-width:0}
+@media (max-width:860px){
+  .proc{grid-template-columns:minmax(0,1fr)}
+  .stage{position:static;order:-1}
+}
+
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px;padding:0;list-style:none}
+.fact{font:500 .8125rem/1.3 var(--font-mono);padding:5px 10px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+
+.steps{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.step{border-bottom:1px solid var(--line)}
+.sh{display:grid;grid-template-columns:2rem minmax(0,1fr);gap:12px;align-items:center;width:100%;padding:13px 0;background:none;border:0;color:inherit;text-align:left;cursor:pointer}
+.sh h3{font:600 1.0625rem/1.3 var(--font-body)}
+.num{display:grid;place-items:center;width:2rem;height:2rem;border-radius:50%;border:1.5px solid var(--line);font:500 .8rem var(--font-mono);color:var(--muted)}
+.step.done .num{background:var(--ok);border-color:var(--ok);color:var(--on-ok);font-size:0}
+.step.done .num::before{content:"✓";font-size:.9rem}
+.step.active .num{background:var(--sel-bg);border-color:var(--sel-bg);color:var(--sel-fg)}
+.step:not(.active) h3{font-weight:500;color:var(--muted)}
+.step.done h3{color:var(--ink)}
+.sb{padding:0 0 18px calc(2rem + 12px)}
+.sb p{margin:0 0 10px;max-width:60ch}
+.note{padding:10px 12px;border-radius:6px;background:var(--note-bg);font-size:.9375rem}
+.note b{display:block;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+
+.nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+.count{font:500 .8125rem var(--font-mono);color:var(--muted);text-align:center}
+.cap{margin:10px 0 0;font-size:.8125rem;color:var(--muted);text-align:center}
+.btn-s{min-height:44px;padding:10px 18px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .9375rem var(--font-body);cursor:pointer}
+.btn-s.primary{background:var(--sel-bg);color:var(--sel-fg);border-color:var(--sel-bg)}
+.btn-s:disabled{opacity:.4;cursor:default}
+
+.timer{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:12px;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.timer output{font:500 2rem/1 var(--font-mono);font-variant-numeric:tabular-nums;min-width:4.2ch}
+.timer .tdone{flex-basis:100%;margin:0;font-weight:600;color:var(--ok)}
+
+/* Reglas de bloqueo */
+.rule{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:0 0 18px}
+.big{display:grid;gap:2px;padding:12px 18px;border:1px solid var(--line);border-radius:8px;background:var(--surface);min-width:0}
+.big b{font:700 3.25rem/.95 var(--font-display)}
+.big span{font-size:.875rem;color:var(--muted);max-width:18ch}
+.rule .arrow{font:500 1.5rem var(--font-mono);color:var(--muted)}
+.sim{margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+.sim h3{font:700 1.25rem var(--font-display);text-transform:uppercase;letter-spacing:.02em;margin-bottom:10px}
+.pips{display:flex;gap:8px;margin-bottom:12px}
+.pips i{width:22px;height:22px;border-radius:50%;border:2px solid var(--line)}
+.pips i.f{background:var(--ok);border-color:var(--ok)}
+.pips.bad i.f{background:#c4161c;border-color:#c4161c}
+.simrow{display:flex;flex-wrap:wrap;gap:10px}
+.status{min-height:3em;margin:12px 0 0;max-width:56ch}
+
+/* Ficha */
+.specs{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:0 40px;margin:0;padding:0;list-style:none}
+.spec{padding:16px 0 18px;border-top:1px solid var(--line);min-width:0}
+.spec .k{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.spec .v{margin:4px 0 6px;font:700 2.125rem/1.05 var(--font-display)}
+.spec .v small{font:600 1rem var(--font-body);color:var(--muted)}
+.spec p{margin:0;max-width:52ch}
+.zbar{display:flex;gap:2px;height:14px;margin:10px 0 8px}
+.zbar i{display:block;height:100%}
+.zbar i:first-child{flex:127;background:var(--seg-a);border-radius:3px 0 0 3px}
+.zbar i:last-child{flex:123;background:var(--seg-b);border-radius:0 3px 3px 0}
+.zleg{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:.875rem}
+.zleg span{display:inline-flex;align-items:center;gap:6px}
+.zleg i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.parts4{display:flex;gap:6px;margin:8px 0}
+.parts4 i{width:22px;height:22px;border-radius:3px;background:var(--seg-a)}
+.anat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,460px);gap:20px 40px;align-items:start;margin-top:36px}
+.parts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.part{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;min-height:48px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);text-align:left;font-size:.9375rem;font-weight:500;cursor:pointer}
+.part em{font:500 .6875rem var(--font-mono);font-style:normal;color:var(--muted)}
+.part[aria-pressed="true"]{background:var(--sel-bg);color:var(--sel-fg);border-color:var(--sel-bg)}
+.part[aria-pressed="true"] em{color:inherit;opacity:.85}
+.anat .stage{position:static}
+@media (max-width:860px){.anat{grid-template-columns:minmax(0,1fr)}.anat .stage{order:-1}}
+.manual{margin:28px 0 0;max-width:60ch;color:var(--muted)}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:.8125rem;color:var(--muted);max-width:70ch}
+
+.tag{margin-left:8px;padding:1px 6px;border:1px solid var(--line);border-radius:4px;font:500 .6875rem var(--font-mono);letter-spacing:.02em;text-transform:none;color:var(--muted);white-space:nowrap}
+.sub{margin-top:40px}
+.intro{margin:0 0 16px;max-width:62ch;color:var(--muted)}
+.limits{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:0 24px;margin:0;padding:0;list-style:none}
+.lim{padding:12px 0 14px;border-top:1px solid var(--line);min-width:0}
+.lim b{display:block;font:700 2rem/1 var(--font-display);font-variant-numeric:tabular-nums}
+.lim span{display:block;font-weight:500}
+.lim small{display:block;color:var(--muted);font-size:.8125rem;line-height:1.35}
+
+.searchrow{display:grid;gap:4px;margin-bottom:12px}
+.lbl{font-size:.8125rem;font-weight:600;color:var(--muted)}
+.search{width:100%;max-width:380px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:inherit}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:6px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--ink);font:500 .875rem var(--font-body);cursor:pointer}
+.chip em{font:500 .75rem var(--font-mono);font-style:normal;color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--sel-bg);color:var(--sel-fg);border-color:var(--sel-bg)}
+.chip[aria-pressed="true"] em{color:inherit;opacity:.85}
+.rcount{margin:0 0 6px;font:500 .8125rem var(--font-mono);color:var(--muted)}
+.cat{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.cat li{display:grid;grid-template-columns:minmax(0,17ch) minmax(0,1fr) auto;gap:4px 16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line)}
+.cat li.empty{display:block;color:var(--muted)}
+.cc{font:500 .8125rem/1.35 var(--font-mono);overflow-wrap:anywhere}
+.cn small{display:block;color:var(--muted);font-size:.8125rem;line-height:1.35}
+.cb{font:500 .8125rem var(--font-mono);color:var(--muted);white-space:nowrap}
+@media (max-width:560px){.cat li{grid-template-columns:minmax(0,1fr) auto}.cc{grid-column:1/-1}}
+
+/* ===== Panel ilustrado ===== */
+.panel{container-type:inline-size;width:100%;max-width:460px;margin-inline:auto}
+.dev{background:linear-gradient(180deg,#f3f5f7,#dde1e6);border:1px solid var(--d-edge);border-radius:4cqw;padding:2cqw 3.2cqw 3.6cqw;box-shadow:0 14px 26px -16px rgba(0,0,0,.45)}
+.bz{display:flex;align-items:center;justify-content:center;gap:3cqw;height:6cqw}
+.led{width:1.8cqw;height:1.8cqw;border-radius:50%;background:#aab2ba;display:block}
+.led.on{background:var(--d-green)}
+.cam{width:3cqw;height:3cqw;border-radius:50%;background:radial-gradient(#3a4856,#10161c);display:block}
+.screen{position:relative;aspect-ratio:16/10;background:var(--d-scr);border:.7cqw solid #20262d;border-radius:1.6cqw;overflow:hidden;color:var(--d-ink);font-size:3cqw;line-height:1.25;font-family:var(--font-body)}
+.scr{position:absolute;inset:0;display:grid}
+.ic{display:inline-block;width:3.6cqw;height:3.6cqw;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ic.lg{width:4.8cqw;height:4.8cqw}
+.ic.xl{width:6.4cqw;height:6.4cqw}
+
+.hl{border-radius:1.4cqw;box-shadow:0 0 0 .5cqw #fff,0 0 0 1.2cqw var(--d-hl);animation:ring 1.6s ease-in-out infinite;position:relative;z-index:2}
+@keyframes ring{50%{box-shadow:0 0 0 .5cqw #fff,0 0 0 1.9cqw rgba(10,132,255,.5)}}
+@media (prefers-reduced-motion:reduce){.hl{animation:none}}
+.interactive [data-r]{cursor:pointer}
+
+.top{position:relative;display:flex;justify-content:space-between;align-items:center;padding:2.2cqw 3.4cqw 0;font-size:2.9cqw;color:#3a4651}
+.wx{display:flex;align-items:center;gap:.8cqw}
+.clock{font-variant-numeric:tabular-nums}
+.grip{position:absolute;left:50%;top:0;translate:-50% 0;width:13cqw;height:1.4cqw;background:#c3cad1;border-radius:0 0 1cqw 1cqw}
+.main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:3cqw;padding:0 5cqw}
+.stat{display:grid;justify-items:center;text-align:center;gap:.5cqw;padding:1cqw}
+.shield{width:15cqw;height:15cqw;stroke-width:1.3}
+.shield.warn{color:var(--d-gold)}
+.shield.ok{color:var(--d-slate)}
+.stat b{font-size:5cqw;font-weight:500;line-height:1.1}
+.stat small{font-size:2.7cqw;color:var(--d-mute)}
+.acts{display:grid;gap:2cqw}
+.db{display:grid;place-items:center;min-height:7cqw;padding:0 2cqw;border-radius:99cqw;font-size:2.8cqw;letter-spacing:.04em;border:.3cqw solid #56606a;text-align:center}
+.db.grey{background:#56606a;color:#fff}
+.db.ghost{background:#fff;color:#2b3640;letter-spacing:0}
+.db.black{background:#11161a;color:#fff;border-color:#11161a}
+.db.navy{background:var(--d-navy);color:#fff;border-color:var(--d-navy);padding:0 6cqw}
+
+.bar{display:flex;align-items:center;gap:2cqw;padding:1.6cqw 3.2cqw 2cqw;border-top:.25cqw solid var(--d-line)}
+.pill{display:flex;align-items:center;gap:1.6cqw;padding:.9cqw 2.2cqw;border:.35cqw solid var(--d-red);border-radius:99cqw;color:var(--d-red)}
+.mid{flex:1;display:flex;justify-content:center}
+.mn-i,.sys{display:grid;place-items:center;padding:.6cqw;color:#4b5864}
+.rt{display:flex;align-items:center;gap:2cqw}
+.failbtn{display:grid;place-items:center;text-align:center;max-width:44cqw;min-width:25cqw;padding:1.5cqw 2cqw;background:var(--d-red);color:#fff;border-radius:.9cqw;font-size:2.7cqw}
+.chat{position:relative;display:grid;place-items:center;padding:.6cqw;color:#4b5864}
+.badge{position:absolute;top:-.6cqw;right:-.8cqw;display:grid;place-items:center;min-width:2.8cqw;height:2.8cqw;padding:0 .6cqw;border-radius:99cqw;background:var(--d-red);color:#fff;font:600 2cqw/1 var(--font-body);font-style:normal}
+.alexa{width:5cqw;height:5cqw;border-radius:50%;border:.8cqw solid #1ea6ea;display:block}
+
+.scr.pin{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:4cqw;padding:3cqw 6cqw;background:var(--d-navy);color:#fff}
+.pback{position:absolute;left:2.6cqw;top:2.2cqw;color:#fff}
+.pl{display:grid;justify-items:center;gap:3.4cqw;text-align:center}
+.pl p{margin:0;font-size:3cqw}
+.dots{display:flex;gap:3.4cqw}
+.dots i{width:2cqw;height:2cqw;border-radius:50%;border:.35cqw solid #fff}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5cqw;justify-items:center}
+.key{display:grid;place-items:center;width:8.2cqw;height:8.2cqw;border-radius:50%;border:.3cqw solid rgba(255,255,255,.85);font-size:3.8cqw}
+.key.txt{border-color:transparent;font-size:2.5cqw;width:auto}
+.key:last-child{border-color:transparent}
+
+.dh{display:flex;align-items:center;justify-content:space-between;padding:2.4cqw 3.4cqw}
+.dh .db{min-height:6.4cqw;padding:0 7cqw}
+.dt{background:#c5c9ce;padding:1.5cqw 3.4cqw;font-size:2.8cqw;font-weight:500}
+.dl{padding:2cqw 3.4cqw;min-height:0}
+.ditem b{display:block;font-size:3cqw;color:#a31b1b}
+.ditem p{margin:.8cqw 0 0;font-size:2.5cqw;color:#434e58}
+.scr.det{grid-template-rows:auto auto 1fr auto}
+
+.lock{display:grid;align-content:center;justify-items:center;gap:3cqw;padding:0 8cqw;text-align:center}
+.lock b{font-size:4.2cqw;font-weight:600}
+.lock p{margin:0;font-size:3cqw}
+.scr.lk{grid-template-rows:1fr auto}
+
+.scr.emg{grid-template-rows:auto auto 1fr;padding:0 3.4cqw}
+.eh{position:relative;display:flex;justify-content:center;padding:2.6cqw 0 1cqw;font-size:3.4cqw;font-weight:500}
+.eh span{position:absolute;right:0;top:2.4cqw;color:#444}
+.et{display:grid;grid-template-columns:repeat(3,1fr);gap:2.4cqw;padding-top:1cqw}
+.et div{display:grid;gap:1cqw;text-align:center}
+.et small{font-size:2.8cqw;font-weight:500}
+.tile{display:grid;justify-items:center;gap:1cqw;padding:2.4cqw 1cqw;border-radius:1cqw;color:#fff}
+.tile em{font-style:normal;font-size:1.9cqw;letter-spacing:.03em}
+.tile.fire{background:#b3261e}.tile.pol{background:var(--d-blue)}.tile.med{background:var(--d-amber)}
+.silent{display:grid;justify-items:center;gap:.6cqw;align-self:center;justify-self:center;padding:1.8cqw 6cqw;border:.35cqw solid #9fc6e0;border-radius:1.4cqw;color:#2a6f9e}
+.silent em{font-style:normal;font-size:2.4cqw}
+
+.scr.mn{grid-template-rows:1fr auto}
+.mnw{display:grid;grid-template-columns:42% 1fr;min-height:0}
+.drawer{margin:0;padding:3cqw 0;list-style:none;background:var(--d-navy);color:#fff;display:grid;align-content:start;gap:1cqw}
+.drawer li{display:flex;align-items:center;gap:2cqw;margin:0 2.6cqw;padding:1.9cqw 1.6cqw;font-size:3.2cqw}
+.drawer .dot{width:3cqw;height:3cqw;border:.4cqw solid #fff;border-radius:.6cqw;display:block}
+.mnr{background:#f6f7f8}
+
+.scr.tl{grid-template-rows:auto 1fr auto}
+.th{display:flex;align-items:center;justify-content:center;position:relative;padding:2.4cqw 3.4cqw;font-size:3.2cqw;font-weight:500;border-bottom:.25cqw solid var(--d-line)}
+.th .ic{position:absolute;left:3cqw}
+.tlist{margin:0;padding:0;list-style:none}
+.tlist li{display:flex;justify-content:space-between;align-items:center;padding:1.7cqw 3.4cqw;font-size:2.9cqw;border-bottom:.25cqw solid var(--d-line)}
+.tlist li.hl{border-radius:0}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 3.2 4.2 4.6 4.2 8.6a4.2 4.2 0 0 1-8.4 0c0-1.6.6-2.7 1.5-3.7.2 1.3.9 1.9 1.7 2.1-.2-3 0-5 1-7z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></symbol>
+    <symbol id="i-badge" viewBox="0 0 24 24"><path d="M12 3l7 2.5v5.5c0 4.2-3 7.6-7 9-4-1.4-7-4.8-7-9V5.5z"/><path d="M12 8.5l1 2.1 2.3.3-1.7 1.6.4 2.3-2-1.1-2 1.1.4-2.3-1.7-1.6 2.3-.3z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h14"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 5h15v11H10l-4 3.5V16H4.5z"/><path d="M8 9h8M8 12.2h5"/></symbol>
+    <symbol id="i-slash" viewBox="0 0 24 24"><path d="M12 3l7.5 2.7v5.6c0 4.3-3.2 7.8-7.5 9.2-4.3-1.4-7.5-4.9-7.5-9.2V5.7z"/><path d="M3.5 20.5L20.5 3.5"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-backspace" viewBox="0 0 24 24"><path d="M9 6h10v12H9l-5-6z"/><path d="M12.5 9.5l4 5M16.5 9.5l-4 5"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.6"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header>
+    <h1>Guía Panel Pro A7</h1>
+    <p class="lede">Procedimientos del operador para el panel Resideo Home Pro A7 ante sabotaje de zona, tamper de gabinete, corte de energía, panel bloqueado y falla de comunicación. Incluye la ficha técnica y el catálogo de sensores.</p>
+  </header>
+
+  <nav class="tabs" aria-label="Guía">
+    <div class="tg"><span class="tgl">Qué hacer ante…</span>
+      <div class="tgrid" role="tablist" aria-label="Procedimientos">
+        <button class="tab" role="tab" id="t-sabotaje" data-t="sabotaje" aria-controls="tab-sabotaje" aria-selected="true"><span class="t1">Sabotaje de zona</span><span class="t2">Falla abajo a la derecha</span></button>
+        <button class="tab" role="tab" id="t-tamper" data-t="tamper" aria-controls="tab-tamper" aria-selected="false" tabindex="-1"><span class="t1">Tamper de gabinete</span><span class="t2">Panel de control manipulado</span></button>
+        <button class="tab" role="tab" id="t-corte" data-t="corte" aria-controls="tab-corte" aria-selected="false" tabindex="-1"><span class="t1">Corte de energía</span><span class="t2">Pérdida de CA</span></button>
+        <button class="tab" role="tab" id="t-bloqueo" data-t="bloqueo" aria-controls="tab-bloqueo" aria-selected="false" tabindex="-1"><span class="t1">Panel bloqueado</span><span class="t2">3 códigos incorrectos</span></button>
+        <button class="tab" role="tab" id="t-comunicacion" data-t="comunicacion" aria-controls="tab-comunicacion" aria-selected="false" tabindex="-1"><span class="t1">Falla de comunicación</span><span class="t2">Aviso en la central</span></button>
+      </div>
+    </div>
+    <div class="tg"><span class="tgl">Referencia</span>
+      <div class="tgrid" role="tablist" aria-label="Referencia">
+        <button class="tab" role="tab" id="t-ficha" data-t="ficha" aria-controls="tab-ficha" aria-selected="false" tabindex="-1"><span class="t1">Ficha del equipo</span><span class="t2">Capacidades y límites</span></button>
+        <button class="tab" role="tab" id="t-sensores" data-t="sensores" aria-controls="tab-sensores" aria-selected="false" tabindex="-1"><span class="t1">Sensores y accesorios</span><span class="t2">Códigos y baterías</span></button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section role="tabpanel" id="tab-sabotaje" aria-labelledby="t-sabotaje"></section>
+    <section role="tabpanel" id="tab-tamper" aria-labelledby="t-tamper" hidden></section>
+    <section role="tabpanel" id="tab-corte" aria-labelledby="t-corte" hidden></section>
+    <section role="tabpanel" id="tab-bloqueo" aria-labelledby="t-bloqueo" hidden></section>
+    <section role="tabpanel" id="tab-comunicacion" aria-labelledby="t-comunicacion" hidden></section>
+    <section role="tabpanel" id="tab-ficha" aria-labelledby="t-ficha" hidden></section>
+    <section role="tabpanel" id="tab-sensores" aria-labelledby="t-sensores" hidden></section>
+  </main>
+
+  <footer>Basada en las notas internas del 29 de junio, 18 de agosto y 9 de septiembre de 2026 y en el folleto ProSeries de Resideo. Las pantallas son ilustraciones esquemáticas del panel.</footer>
+</div>
+
+<script>
+(function(){
+  var $ = function(s, r){ return (r || document).querySelector(s); };
+  var fmt = function(s){ return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+  var ic = function(n, c){ return '<svg class="ic ' + (c || '') + '" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-' + n + '"/></svg>'; };
+  var on = function(h, k){ return h === k ? ' hl' : ''; };
+
+  /* ---------- Piezas del panel ---------- */
+  function pill(h){
+    return '<span class="pill' + on(h, 'panic') + '" data-r="panic">' + ic('flame') + ic('plus') + ic('badge') + '</span>';
+  }
+  function bar(o){
+    o = o || {};
+    var h = o.h, alert = o.alert || 'none', text = o.text || 'Zona 1 Otros';
+    var menu = o.menu !== false;
+    var a = '';
+    if (alert === 'fail') a = '<span class="failbtn' + on(h, 'alerts') + '" data-r="alerts">' + text + '</span>';
+    if (alert === 'badge') a = '<span class="chat' + on(h, 'alerts') + '" data-r="alerts">' + ic('chat', 'lg') + '<i class="badge">1</i></span>';
+    return '<div class="bar">' + pill(h) +
+      (o.alexa ? '<span class="alexa' + on(h, 'alexa') + '" data-r="alexa"></span>' : '') +
+      '<span class="mid">' + (menu ? '<span class="mn-i' + on(h, 'menu') + '" data-r="menu">' + ic('menu', 'lg') + '</span>' : '') + '</span>' +
+      '<span class="rt">' + a + '<span class="sys' + on(h, 'sysicon') + '" data-r="sysicon">' + ic('slash', 'lg') + '</span></span></div>';
+  }
+
+  var DET = {
+    zona: {t: 'Zona 1 Otros', p: ['La estación puede haber sido manipulada. Revise y realice las acciones correctivas.', 'Si necesita más ayuda, contacte a su proveedor de servicio.']},
+    ca: {t: 'Pérdida de CA', p: ['El sistema de control principal perdió la alimentación de CA. Asegúrese de que el adaptador CA esté enchufado y de no tener un apagón.', 'Si necesita más ayuda, contacte a su proveedor de seguridad.']},
+    tamper: {head: 'Problemas resueltos', t: 'Panel de control manipulado', p: ['La cubierta del panel de control puede haber sido manipulada. Verificar que el frente del panel de control esté asegurado de forma adecuada a la base y a la pared (si está montado en la pared).', 'Si necesita más ayuda, contacte a su proveedor de seguridad.']}
+  };
+
+  var S = {
+    home: function(o){
+      var h = o.h, notReady = o.state === 'notready';
+      return '<div class="scr" style="grid-template-rows:auto 1fr auto">' +
+        '<div class="top"><span class="grip' + on(h, 'cfg') + '" data-r="cfg"></span>' +
+          '<span class="wx' + on(h, 'weather') + '" data-r="weather">' + ic('sun') + ' 16°</span>' +
+          '<span class="clock' + on(h, 'time') + '" data-r="time">11:53 AM</span></div>' +
+        '<div class="main">' +
+          '<div class="stat' + on(h, 'status') + '" data-r="status">' + ic('slash', 'shield ' + (notReady ? 'warn' : 'ok')) +
+            '<b>' + (notReady ? 'No listo' : 'Desarmado') + '</b><small>' + (o.sub || '') + '</small></div>' +
+          '<div class="acts">' + (notReady
+            ? '<span class="db grey">' + (o.anular || 'ANULAR Y ARMAR') + '</span><span class="db ghost">Revisar sensores</span>'
+            : '<span class="db black' + on(h, 'arm') + '" data-r="arm">ARMAR</span>') + '</div>' +
+        '</div>' +
+        bar({h: h, alert: o.alert, text: o.alertText, alexa: o.alexa}) +
+      '</div>';
+    },
+    detail: function(h, it){
+      it = it || DET.zona;
+      return '<div class="scr det">' +
+        '<div class="dh"><span>' + ic('back', 'lg') + '</span><span class="db black' + on(h, 'borrar') + '">Borrar</span></div>' +
+        '<div class="dt">' + (it.head || 'Problemas activos') + '</div>' +
+        '<div class="dl"><div class="ditem"><b>! ' + it.t + '</b>' +
+          it.p.map(function(x){ return '<p>' + x + '</p>'; }).join('') + '</div></div>' +
+        bar({alert: 'badge', menu: false}) +
+      '</div>';
+    },
+    pin: function(title){
+      var keys = [1,2,3,4,5,6,7,8,9].map(function(n){ return '<span class="key">' + n + '</span>'; }).join('');
+      return '<div class="scr pin"><span class="pback">' + ic('back', 'lg') + '</span>' +
+        '<div class="pl"><p>' + title + '</p><div class="dots"><i></i><i></i><i></i><i></i></div></div>' +
+        '<div class="keys">' + keys + '<span class="key txt">Borrar</span><span class="key">0</span><span class="key">' + ic('backspace') + '</span></div></div>';
+    },
+    lock: function(){
+      return '<div class="scr lk"><div class="lock"><b>El panel está bloqueado</b>' +
+        '<p>Su panel se ha bloqueado temporalmente debido a múltiples intentos de ingresar el PIN.</p>' +
+        '<span class="db navy">CERRAR</span></div>' + bar({menu: false}) + '</div>';
+    },
+    emg: function(h){
+      return '<div class="scr emg"><div class="eh"><b style="font-weight:500">Emergencia</b><span>' + ic('x', 'lg') + '</span></div>' +
+        '<div class="et">' +
+          '<div><small>Incendio</small><span class="tile fire">' + ic('flame', 'xl') + '<em>SONAR ALARMA</em></span></div>' +
+          '<div><small>Policía</small><span class="tile pol">' + ic('badge', 'xl') + '<em>SONAR ALARMA</em></span></div>' +
+          '<div><small>Médica</small><span class="tile med">' + ic('plus', 'xl') + '<em>SONAR ALARMA</em></span></div>' +
+        '</div>' +
+        '<span class="silent' + on(h, 'silent') + '">' + ic('badge', 'lg') + '<em>ALARMA DE SILENCIO</em></span></div>';
+    },
+    menu: function(h){
+      var items = [['Eventos',''],['Ajustes',''],['Herramientas','tools'],['Ayuda','']];
+      var lis = items.map(function(it){
+        return '<li class="' + (h === it[1] && it[1] ? 'hl' : '') + '"><i class="dot"></i>' + it[0] + '</li>';
+      }).join('');
+      return '<div class="scr mn"><div class="mnw"><ul class="drawer">' + lis + '</ul><div class="mnr"></div></div>' + bar({}) + '</div>';
+    },
+    tools: function(h){
+      var rows = ['Información del sistema','Pruebas del sistema ›','Inscripción con pantalla táctil Wi-Fi','Configurar vía de comunicación','Reiniciar sistema'];
+      var lis = rows.map(function(r, i){ return '<li' + (h === 'restart' && i === 4 ? ' class="hl"' : '') + '>' + r + '</li>'; }).join('');
+      return '<div class="scr tl"><div class="th">' + ic('back', 'lg') + '<span>Herramientas</span></div><ul class="tlist">' + lis + '</ul>' + bar({menu: false}) + '</div>';
+    }
+  };
+
+  function panelHTML(){
+    return '<div class="panel"><div class="dev"><div class="bz"><i class="led on" data-r="led-p"></i><i class="cam" data-r="cam"></i><i class="led" data-r="led-s"></i></div><div class="screen" aria-hidden="true"></div></div></div>';
+  }
+
+  /* ---------- Cronómetro ---------- */
+  function makeTimer(total, opts){
+    opts = opts || {};
+    var el = document.createElement('div');
+    el.className = 'timer';
+    el.innerHTML = '<output>' + fmt(total) + '</output>' +
+      '<button type="button" class="btn-s primary go">Iniciar</button>' +
+      '<button type="button" class="btn-s rs">Reiniciar</button>' +
+      '<p class="tdone" hidden>' + (opts.doneText || '') + '</p>';
+    var out = $('output', el), go = $('.go', el), msg = $('.tdone', el);
+    var left = total, id = null, end = 0;
+    function paint(){ out.textContent = fmt(left); }
+    function stop(){ clearInterval(id); id = null; go.textContent = 'Iniciar'; }
+    function tick(){
+      left = Math.max(0, Math.ceil((end - Date.now()) / 1000));
+      paint();
+      if (left <= 0){ stop(); msg.hidden = false; if (opts.onEnd) opts.onEnd(); }
+    }
+    function start(){
+      if (id){ stop(); return; }
+      if (left <= 0) left = total;
+      msg.hidden = true;
+      end = Date.now() + left * 1000;
+      id = setInterval(tick, 250);
+      go.textContent = 'Pausar';
+      tick();
+    }
+    function reset(){ stop(); left = total; msg.hidden = true; paint(); }
+    go.addEventListener('click', start);
+    $('.rs', el).addEventListener('click', reset);
+    return {el: el, start: start, reset: reset, stop: stop};
+  }
+
+  /* ---------- Procedimientos con pasos ---------- */
+  var PROCS = {
+    sabotaje: {
+      title: 'Sabotaje de zona',
+      facts: ['Tamper accionado', 'Se borra con el código del cliente', 'Restaura teclado y Mastermind'],
+      steps: [
+        {t: 'Se recibe la señal de sabotaje', d: 'Un sensor se desarmó o se manipuló y accionó el tamper. El panel muestra un mensaje de falla en la parte inferior derecha de la pantalla.',
+          scene: function(){ return S.home({state: 'notready', sub: 'Zona 1 Otros Problema', alert: 'fail', h: 'alerts'}); }},
+        {t: 'Abrir los Problemas activos', d: 'Al seleccionar el aviso de falla se amplía la información de los Problemas activos.',
+          scene: function(){ return S.detail(); }},
+        {t: 'Revisar cómo quedó el sensor', d: 'Si se intenta Borrar la falla con el sensor desarmado o mal cerrado, con el tamper accionado, el mensaje no se borra. Al volver a la pantalla principal solo queda un cuadro de diálogo con un número en rojo abajo a la derecha.',
+          note: ['Sensor mal cerrado', 'El mensaje no se borra mientras el tamper siga accionado.'],
+          scene: function(){ return S.home({state: 'notready', sub: 'Zona 1 Otros Problema', alert: 'badge', h: 'alerts'}); }},
+        {t: 'Borrar la falla', d: 'Con el sensor bien cerrado, el sabotaje no se restaura por sí solo. En el teclado hay que seleccionar el cuadro de diálogo o mensaje de error y presionar Borrar.',
+          scene: function(){ return S.detail('borrar'); }},
+        {t: 'Ingresar el código del cliente', d: 'Introducir el código de acceso del cliente para completar el borrado.',
+          scene: function(){ return S.pin('Ingresar código de usuario'); }},
+        {t: 'Verificar la restauración', d: 'La falla se restaura tanto en el teclado como en el Mastermind.',
+          scene: function(){ return S.home({state: 'ready'}); }}
+      ]
+    },
+    tamper: {
+      title: 'Tamper de gabinete',
+      facts: ['Contactos de la carcasa', 'Notificación PANEL DE CONTROL MANIPULADO', 'Pide el código de usuario'],
+      steps: [
+        {t: 'Se separan los contactos de la carcasa', d: 'Si los contactos de la carcasa del teclado se separan del teclado mismo, se acciona el tamper y llega una notificación al display que dice PANEL DE CONTROL MANIPULADO.',
+          scene: function(){ return S.home({state: 'notready', alert: 'fail', alertText: '! Panel de control manipulado', h: 'alerts'}); }},
+        {t: 'Cerrar correctamente la tapa', d: 'Para que restaure es necesario cerrar correctamente la tapa del teclado.',
+          scene: function(){ return S.home({state: 'notready', alert: 'fail', alertText: '! Panel de control manipulado'}); }},
+        {t: 'Abrir la notificación', d: 'Seleccionar la notificación de PANEL DE CONTROL MANIPULADO. El detalle indica verificar que el frente del panel esté asegurado a la base y a la pared (si está montado en la pared).',
+          scene: function(){ return S.detail('', DET.tamper); }},
+        {t: 'Borrar la notificación', d: 'Presionar el botón BORRAR.',
+          scene: function(){ return S.detail('borrar', DET.tamper); }},
+        {t: 'Ingresar el código de usuario', d: 'Para confirmar la acción, el teclado pide el código de usuario.',
+          scene: function(){ return S.pin('Ingresar código de usuario'); }},
+        {t: 'Verificar la restauración', d: 'La notificación se borra y el tamper del gabinete queda restaurado.',
+          scene: function(){ return S.home({state: 'ready'}); }}
+      ]
+    },
+    corte: {
+      title: 'Corte de energía',
+      facts: ['Notificación PÉRDIDA DE CA', 'Fuente de 220 V conectada al teclado', 'Revisar el tomacorriente'],
+      steps: [
+        {t: 'Aparece PÉRDIDA DE CA', d: 'Ante un corte del suministro de 220 V del equipo aparece una notificación de PÉRDIDA DE CA en la parte inferior de la pantalla.',
+          scene: function(){ return S.home({state: 'notready', anular: 'ANULAR TODOS', alert: 'fail', alertText: 'Pérdida de CA', h: 'alerts'}); }},
+        {t: 'Abrir el detalle de la falla', d: 'Hacer click sobre la notificación para ver más detalle de la falla.',
+          scene: function(){ return S.detail('', DET.ca); }},
+        {t: 'Verificar la fuente', d: 'El equipo tiene una fuente conectada a 220 V directamente al teclado. Además de las verificaciones habituales del suministro, hay que chequear que la fuente esté conectada adecuadamente al tomacorriente.',
+          scene: function(){ return S.detail('', DET.ca); }}
+      ]
+    },
+    comunicacion: {
+      title: 'Falla de comunicación',
+      facts: ['Prueba: alarma de silencio', 'Reinicio desde Herramientas', 'Espera: 5 minutos'],
+      steps: [
+        {t: 'Llega el aviso de falla de comunicación', d: 'La central recibe un aviso que informa la falla. Para hacer pruebas se usa el panel del cliente.',
+          scene: function(){ return S.home({state: 'ready'}); }},
+        {t: 'Abrir las señales de emergencia', d: 'Presionar el botón inferior de la izquierda, la sección que lleva a las señales de emergencia.',
+          scene: function(){ return S.home({state: 'ready', h: 'panic'}); }},
+        {t: 'Probar con ALARMA DE SILENCIO', d: 'Presionar el botón ALARMA DE SILENCIO. Ingresa un asalto teclado y permite corroborar la comunicación con la central de alarma.',
+          scene: function(){ return S.emg('silent'); }},
+        {t: 'Si la falla continúa, ir a Herramientas', d: 'Hay que reiniciar el equipo. Tocar el menú (las 3 líneas de la parte inferior central de la pantalla) y seleccionar HERRAMIENTAS.',
+          scene: function(){ return S.menu('tools'); }},
+        {t: 'Ingresar el código del cliente', d: 'Ingresar el código de usuario de 4 dígitos del cliente.',
+          scene: function(){ return S.pin('Ingresar PIN para Configuración'); }},
+        {t: 'Reiniciar el sistema', d: 'Clickear en REINICIAR SISTEMA y presionar OK para aceptar el reinicio.',
+          scene: function(){ return S.tools('restart'); }},
+        {t: 'Esperar 5 minutos y repetir la prueba', d: 'Pasado ese tiempo, repetir la prueba de asalto con ALARMA DE SILENCIO.',
+          timer: {seconds: 300, done: 'Pasaron 5 minutos. Repetir la prueba de asalto.'},
+          scene: function(){ return S.home({state: 'ready', h: 'panic'}); }},
+        {t: 'Si la falla persiste', d: 'Cargar job e informar al cliente de la falta de monitoreo.',
+          scene: function(){ return S.home({state: 'ready'}); }}
+      ]
+    }
+  };
+
+  function buildProc(root, cfg){
+    root.innerHTML =
+      '<div class="proc"><div class="info">' +
+        '<h2>' + cfg.title + '</h2>' +
+        '<ul class="facts">' + cfg.facts.map(function(f){ return '<li class="fact">' + f + '</li>'; }).join('') + '</ul>' +
+        '<ol class="steps"></ol></div>' +
+        '<div class="stage">' + panelHTML() +
+          '<div class="nav"><button type="button" class="btn-s prev">Anterior</button><span class="count" aria-live="polite"></span><button type="button" class="btn-s primary next">Siguiente</button></div>' +
+          '<p class="cap">Ilustración esquemática de la pantalla</p></div></div>';
+    var list = $('.steps', root), screen = $('.screen', root);
+    var items = [], cur = 0;
+    cfg.steps.forEach(function(s, i){
+      var li = document.createElement('li');
+      li.className = 'step';
+      li.innerHTML = '<button type="button" class="sh" aria-expanded="false"><span class="num">' + (i + 1) + '</span><h3>' + s.t + '</h3></button>' +
+        '<div class="sb" hidden><p>' + s.d + '</p>' +
+        (s.note ? '<p class="note"><b>' + s.note[0] + '</b>' + s.note[1] + '</p>' : '') + '</div>';
+      if (s.timer){
+        var t = makeTimer(s.timer.seconds, {doneText: s.timer.done});
+        $('.sb', li).appendChild(t.el);
+      }
+      $('.sh', li).addEventListener('click', function(){ go(i); });
+      list.appendChild(li);
+      items.push(li);
+    });
+    var prev = $('.prev', root), next = $('.next', root), count = $('.count', root);
+    function go(i){
+      cur = i;
+      items.forEach(function(li, j){
+        li.classList.toggle('active', j === i);
+        li.classList.toggle('done', j < i);
+        $('.sb', li).hidden = j !== i;
+        $('.sh', li).setAttribute('aria-expanded', j === i ? 'true' : 'false');
+      });
+      screen.innerHTML = cfg.steps[i].scene();
+      count.textContent = 'Paso ' + (i + 1) + ' de ' + cfg.steps.length;
+      prev.disabled = i === 0;
+      next.textContent = i === cfg.steps.length - 1 ? 'Volver al inicio' : 'Siguiente';
+    }
+    prev.addEventListener('click', function(){ if (cur > 0) go(cur - 1); });
+    next.addEventListener('click', function(){ go(cur === cfg.steps.length - 1 ? 0 : cur + 1); });
+    go(0);
+  }
+
+  /* ---------- Panel bloqueado ---------- */
+  function buildLock(root){
+    root.innerHTML =
+      '<div class="proc"><div class="info">' +
+        '<h2>Panel bloqueado</h2>' +
+        '<div class="rule"><div class="big"><b>3</b><span>códigos de usuario incorrectos</span></div><span class="arrow" aria-hidden="true">→</span><div class="big"><b>5 min</b><span>de bloqueo del teclado</span></div></div>' +
+        '<p style="max-width:56ch;margin:0">En caso de introducir el código de usuario 3 veces mal, el teclado se bloquea por 5 minutos. El panel muestra el mensaje “El panel está bloqueado” con el botón CERRAR.</p>' +
+        '<div class="sim"><h3>Probar en el panel</h3>' +
+          '<div class="pips" id="pips"><i></i><i></i><i></i></div>' +
+          '<div class="simrow"><button type="button" class="btn-s primary" id="wrong">Ingresar código incorrecto</button><button type="button" class="btn-s" id="reset">Reiniciar prueba</button></div>' +
+          '<p class="status" id="lstatus" aria-live="polite"></p>' +
+          '<div id="lslot"></div></div>' +
+      '</div><div class="stage">' + panelHTML() + '<p class="cap">Ilustración esquemática de la pantalla</p></div></div>';
+    var screen = $('.screen', root), pips = $('#pips', root), status = $('#lstatus', root);
+    var wrong = $('#wrong', root), slot = $('#lslot', root);
+    var tries = 0;
+    var timer = makeTimer(300, {
+      doneText: 'Terminó el bloqueo.',
+      onEnd: function(){ tries = 0; paint('Pasaron los 5 minutos. El teclado vuelve a aceptar el código de usuario.'); }
+    });
+    slot.appendChild(timer.el);
+    function paint(msg){
+      var locked = tries >= 3;
+      $$('i', pips).forEach(function(p, i){ p.classList.toggle('f', i < tries); });
+      pips.classList.toggle('bad', locked);
+      screen.innerHTML = locked ? S.lock() : S.pin('Ingresar código de usuario');
+      wrong.disabled = locked;
+      timer.el.hidden = !locked;
+      status.textContent = msg || (tries === 0 ? 'Sin intentos fallidos.' : tries + ' de 3 intentos fallidos.');
+    }
+    function $$(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+    wrong.addEventListener('click', function(){
+      if (tries >= 3) return;
+      tries++;
+      paint(tries >= 3 ? 'El panel se bloqueó. Hay que esperar 5 minutos.' : null);
+      if (tries >= 3){ timer.reset(); timer.start(); }
+    });
+    $('#reset', root).addEventListener('click', function(){ timer.reset(); tries = 0; paint(); });
+    paint();
+  }
+
+  /* ---------- Ficha del equipo ---------- */
+  var PARTS = [
+    {k: 'led-p', t: 'LED de encendido'},
+    {k: 'led-s', t: 'LED de estado'},
+    {k: 'cam', t: 'Cámara integrada', n: 'Solo PROA7PLUS'},
+    {k: 'cfg', t: 'Ajustes de pantalla y audio'},
+    {k: 'weather', t: 'Clima'},
+    {k: 'time', t: 'Hora'},
+    {k: 'status', t: 'Estado del sistema', n: 'Centro de la pantalla'},
+    {k: 'arm', t: 'Opciones de armado'},
+    {k: 'menu', t: 'Menú'},
+    {k: 'alerts', t: 'Alertas'},
+    {k: 'panic', t: 'Teclas de pánico'},
+    {k: 'alexa', t: 'Alexa', n: 'Solo PROA7PLUS'},
+    {k: 'sysicon', t: 'Estado del sistema', n: 'Ícono inferior derecho'}
+  ];
+
+  var LIMITS = [
+    ['Zonas de máxima seguridad', '250', 'Incluye dispositivos ProSiX unidireccionales y legacy'],
+    ['Dispositivos ProSiX bidireccionales', '127', 'Máximo de dispositivos inalámbricos'],
+    ['Códigos de usuario', '96', ''],
+    ['Registro de eventos', '4.000', ''],
+    ['Particiones', '4', 'Opción de recepción común'],
+    ['Llaveros inalámbricos', '32', ''],
+    ['Teclados inalámbricos', '8', 'Pantalla táctil o LCD'],
+    ['Teclados táctiles Wi-Fi secundarios', '8', ''],
+    ['MotionViewers inalámbricos', '8', 'Interior y exterior, bidireccionales (PROA7PLUS)'],
+    ['Dispositivos Bluetooth', '6', ''],
+    ['Dispositivos Z-Wave', '78', '60 luces, 6 cerraduras, 6 termostatos y 6 puertas de garaje'],
+    ['Escenas inteligentes', '100', 'Requiere Total Connect 2.0']
+  ];
+
+  function buildFicha(root){
+    root.innerHTML =
+      '<h2>Resideo Home Pro A7</h2>' +
+      '<ul class="specs">' +
+        '<li class="spec"><div class="k">Capacidad de zonas</div><div class="v">250 <small>zonas de seguridad</small></div>' +
+          '<div class="zbar" role="img" aria-label="127 zonas encriptadas y 123 zonas heredadas"><i></i><i></i></div>' +
+          '<div class="zleg"><span><i style="background:var(--seg-a)"></i>127 sensores encriptados SiX/PROSIX</span><span><i style="background:var(--seg-b)"></i>123 sensores heredados con módulo PROTAKEOVER</span></div></li>' +
+        '<li class="spec"><div class="k">Comunicación dual</div><div class="v">Wi-Fi <small>y celular LTE</small></div>' +
+          '<p>Wi-Fi integrado (módulo PROWIFIZW). Es compatible con comunicadores celulares LTE (AT&amp;T o Verizon) para redundancia.</p></li>' +
+        '<li class="spec"><div class="k">Automatización del hogar</div><div class="v">78 <small>dispositivos</small> · 100 <small>escenas</small></div>' +
+          '<p>Z-Wave Plus integrado. Controla luces, cerraduras y termostatos, con hasta 100 escenas automatizadas.</p></li>' +
+        '<li class="spec"><div class="k">Integración de voz<span class="tag">Alexa y HomeKit: solo PROA7PLUS</span></div><div class="v">Alexa <small>integrada</small></div>' +
+          '<p>Amazon Alexa integrado para control local. Soporta Apple HomeKit (con actualizaciones de firmware) y es compatible con Google Home.</p></li>' +
+        '<li class="spec"><div class="k">Seguridad adicional<span class="tag">Cámara y Bluetooth: solo PROA7PLUS</span></div><div class="v">Cámara <small>y Bluetooth</small></div>' +
+          '<p>Cámara frontal para fotos de desarme. Desarme automático por Bluetooth cuando el teléfono del usuario se acerca.</p></li>' +
+        '<li class="spec"><div class="k">Particiones</div><div class="v">4 <small>independientes</small></div>' +
+          '<div class="parts4" aria-hidden="true"><i></i><i></i><i></i><i></i></div>' +
+          '<p>Ideal para edificios de apartamentos u oficinas pequeñas.</p></li>' +
+      '</ul>' +
+      '<h2 class="sub">Límites del sistema</h2>' +
+      '<ul class="limits">' + LIMITS.map(function(l){
+        return '<li class="lim"><b>' + l[1] + '</b><span>' + l[0] + '</span>' + (l[2] ? '<small>' + l[2] + '</small>' : '') + '</li>';
+      }).join('') + '</ul>' +
+      '<p class="manual">Modelos del panel en el folleto: PROA7PLUS, PROA7PLUS-FA y PROA7-FA (First Alert). PROA7DM es el montaje de escritorio.</p>' +
+      '<h2 class="sub">Servicios</h2>' +
+      '<ul class="specs">' +
+        '<li class="spec"><div class="k">Transmisión de alarmas</div><div class="v">AlarmNet</div><p>Seguridad: transmisión de señales de alarma.</p></li>' +
+        '<li class="spec"><div class="k">Control remoto del usuario</div><div class="v">Total Connect 2.0</div><p>Seguridad y control remoto de las funciones de seguridad, notificaciones del sistema y compatibilidad con un MotionViewer. Compatible con Alexa de Amazon y Google Home.</p></li>' +
+      '</ul>' +
+      '<div class="anat"><div class="info"><h2>Partes de la pantalla</h2>' +
+        '<ul class="parts">' + PARTS.map(function(p){
+          return '<li><button type="button" class="part" data-k="' + p.k + '" aria-pressed="false">' + p.t + (p.n ? '<em>' + p.n + '</em>' : '') + '</button></li>';
+        }).join('') + '</ul></div>' +
+        '<div class="stage">' + panelHTML() + '<p class="cap">Toque una parte para verla marcada en el panel</p></div></div>' +
+      '<p class="manual">El uso de esta central es muy intuitivo. Para una función más específica, consultar el manual completo.</p>';
+    var dev = $('.panel', root), screen = $('.screen', root);
+    dev.classList.add('interactive');
+    screen.innerHTML = S.home({state: 'ready', alert: 'fail', alertText: 'Alertas', alexa: true});
+    var btns = Array.prototype.slice.call(root.querySelectorAll('.part'));
+    function pick(k){
+      Array.prototype.slice.call(dev.querySelectorAll('.hl')).forEach(function(e){ e.classList.remove('hl'); });
+      Array.prototype.slice.call(dev.querySelectorAll('[data-r="' + k + '"]')).forEach(function(e){ e.classList.add('hl'); });
+      btns.forEach(function(b){ b.setAttribute('aria-pressed', b.getAttribute('data-k') === k ? 'true' : 'false'); });
+    }
+    btns.forEach(function(b){ b.addEventListener('click', function(){ pick(b.getAttribute('data-k')); }); });
+    dev.addEventListener('click', function(e){
+      var t = e.target.closest('[data-r]');
+      if (t && dev.contains(t)) pick(t.getAttribute('data-r'));
+    });
+    pick('panic');
+  }
+
+  /* ---------- Sensores y accesorios ---------- */
+  var CATS = [
+    ['todos', 'Todos'], ['puertas', 'Puertas y ventanas'], ['movimiento', 'Movimiento'], ['vidrio', 'Vidrio e impacto'],
+    ['vida', 'Humo, CO y calor'], ['ambiente', 'Inundación y temperatura'], ['sirenas', 'Sirenas'],
+    ['personal', 'Llaveros y pánico'], ['exterior', 'Exterior y activos'], ['comunic', 'Comunicadores y accesorios'], ['teclados', 'Teclados y pantallas']
+  ];
+  var DEV = [
+    ['puertas', 'PROSIXCTV', 'Sensor de puerta/ventana', '1 × CR123A', ''],
+    ['puertas', 'PROSIXMINI', 'Mini sensor de puerta/ventana', '1 × CR2450', ''],
+    ['puertas', 'PROSIXMINI3', 'Mini sensor de puerta/ventana', '1 × CR2', ''],
+    ['vidrio', 'PROSIXGB', 'Detector de rotura de vidrios', '1 × CR123A', ''],
+    ['vidrio', 'PROSIXSHOCK', 'Sensor de impacto', '1 × CR123A', ''],
+    ['movimiento', 'PROSIXPIRV', 'Detector de movimiento', '1 × CR123A', ''],
+    ['movimiento', 'PROINDMV', 'MotionViewer interior', '3 × CR123A', 'Solo PROA7PLUS'],
+    ['movimiento', 'PROOUTMV', 'MotionViewer exterior', '3 × CR123A', 'Solo PROA7PLUS'],
+    ['vida', 'PROSIXSMOKEV', 'Detector de humo', '2 × CR123A', ''],
+    ['vida', 'PROSIXHEATV', 'Sensor de calor', '2 × CR123A', ''],
+    ['vida', 'PROSIXCOV', 'Detector de monóxido de carbono (CO)', '2 × CR123A', ''],
+    ['vida', 'PROSIXCMBOV', 'Detector combinado de humo y CO', '4 × CR123A', ''],
+    ['ambiente', 'PROSIXFLOOD', 'Detector de inundaciones', '1 × CR123A', ''],
+    ['ambiente', 'PROSIXTEMP', 'Sensor de temperatura', '1 × CR123A', ''],
+    ['sirenas', 'PROSIXSIREN', 'Sirena para uso interior', '4 × litio AA', ''],
+    ['sirenas', 'PROSIXSIRENO', 'Sirena para uso exterior', '4 × litio AA', ''],
+    ['personal', 'PROSIXFOB', 'Llavero inalámbrico bidireccional', '1 × CR2032', ''],
+    ['personal', 'PROSIXMED', 'Transmisor personal de emergencia médica', '1 × CR2450', ''],
+    ['personal', 'PROSIXPANIC', 'Transmisor de pánico personal', '1 × CR2450', ''],
+    ['exterior', '5800PIR-OD2', 'Sensor de movimiento para exteriores', 'Litio', 'Requiere PROTAKEOVER'],
+    ['exterior', '5816OD', 'Contacto/transmisor para exteriores', 'Litio', 'Requiere PROTAKEOVER'],
+    ['exterior', '5870API-WH / 5870API-GY', 'Sensor de protección de activos interior', '1 × CR2', 'Requiere PROTAKEOVER'],
+    ['comunic', 'PROTAKEOVER', 'Módulo de integración inalámbrico', '', 'Permite que los paneles ProSeries se comuniquen con múltiples protocolos de sensores inalámbricos unidireccionales'],
+    ['comunic', 'PROSIXRPTR', 'Repetidor inalámbrico', '', ''],
+    ['comunic', 'PROSIXC2W', 'Convertidor inalámbrico de cableado a SiX', '', ''],
+    ['comunic', 'PROWIFI', 'Módulo de comunicación Wi-Fi', '', ''],
+    ['comunic', 'PROWIFIZW', 'Módulo de comunicaciones combinado Wi-Fi/Z-Wave', '', ''],
+    ['comunic', 'PROLTE-A', 'Comunicador celular LTE', '', 'EE.UU./Canadá, red AT&amp;T'],
+    ['comunic', 'PROLTE-ANT', 'Kit de antena externa', '', ''],
+    ['teclados', 'PROWLTOUCH(C)', 'Pantalla táctil inalámbrica de 7 pulgadas', '', 'El sufijo C indica la marca Resideo'],
+    ['teclados', 'PROWLTOUCHDM', 'Montaje de escritorio para la pantalla táctil inalámbrica', '', ''],
+    ['teclados', 'PROWLTOUCHWA', 'Soporte de pared para la pantalla táctil inalámbrica', '', ''],
+    ['teclados', 'PROSIXLCDKP(C)', 'Teclado LCD inalámbrico', '', 'El sufijo C indica la marca Resideo']
+  ];
+
+  function buildSensores(root){
+    root.innerHTML =
+      '<h2>Sensores y accesorios</h2>' +
+      '<p class="intro">Sensores, sirenas, llaveros, comunicadores y teclados inalámbricos del folleto ProSeries, con la batería de cada uno. Se omiten cámaras, termostatos y control de iluminación Z-Wave.</p>' +
+      '<div class="searchrow"><label class="lbl" for="q">Buscar por código, nombre o batería</label><input id="q" class="search" type="search" autocomplete="off" placeholder="Ej.: CR123A, humo, PROSIX"></div>' +
+      '<div class="chips" id="chips" role="group" aria-label="Categoría"></div>' +
+      '<p class="rcount" id="rc" aria-live="polite"></p>' +
+      '<ul class="cat" id="cat"></ul>';
+    var chips = $('#chips', root), ul = $('#cat', root), rc = $('#rc', root), input = $('#q', root);
+    var cat = 'todos', q = '';
+    function norm(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+    chips.innerHTML = CATS.map(function(c){
+      var n = c[0] === 'todos' ? DEV.length : DEV.filter(function(d){ return d[0] === c[0]; }).length;
+      return '<button type="button" class="chip" data-c="' + c[0] + '" aria-pressed="' + (c[0] === 'todos') + '">' + c[1] + '<em>' + n + '</em></button>';
+    }).join('');
+    function render(){
+      var list = DEV.filter(function(d){
+        if (cat !== 'todos' && d[0] !== cat) return false;
+        return !q || norm(d[1] + ' ' + d[2] + ' ' + d[3] + ' ' + d[4]).indexOf(q) > -1;
+      });
+      ul.innerHTML = list.length ? list.map(function(d){
+        return '<li><span class="cc">' + d[1] + '</span><span class="cn">' + d[2] + (d[4] ? '<small>' + d[4] + '</small>' : '') + '</span><span class="cb">' + d[3] + '</span></li>';
+      }).join('') : '<li class="empty">Ningún producto coincide con la búsqueda.</li>';
+      rc.textContent = list.length === DEV.length ? DEV.length + ' productos' : list.length + ' de ' + DEV.length + ' productos';
+    }
+    chips.addEventListener('click', function(e){
+      var b = e.target.closest('.chip');
+      if (!b) return;
+      cat = b.getAttribute('data-c');
+      Array.prototype.slice.call(chips.children).forEach(function(c){ c.setAttribute('aria-pressed', c === b ? 'true' : 'false'); });
+      render();
+    });
+    input.addEventListener('input', function(){ q = norm(input.value.trim()); render(); });
+    render();
+  }
+
+  /* ---------- Pestañas ---------- */
+  buildProc($('#tab-sabotaje'), PROCS.sabotaje);
+  buildProc($('#tab-tamper'), PROCS.tamper);
+  buildProc($('#tab-corte'), PROCS.corte);
+  buildLock($('#tab-bloqueo'));
+  buildProc($('#tab-comunicacion'), PROCS.comunicacion);
+  buildFicha($('#tab-ficha'));
+  buildSensores($('#tab-sensores'));
+
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  function show(id, focus){
+    tabs.forEach(function(t){
+      var sel = t.getAttribute('data-t') === id;
+      t.setAttribute('aria-selected', sel ? 'true' : 'false');
+      t.tabIndex = sel ? 0 : -1;
+      if (sel && focus) t.focus();
+    });
+    Array.prototype.slice.call(document.querySelectorAll('[role="tabpanel"]')).forEach(function(p){ p.hidden = p.id !== 'tab-' + id; });
+    try { history.replaceState(null, '', '#' + id); } catch (e) {}
+  }
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ show(t.getAttribute('data-t')); });
+    t.addEventListener('keydown', function(e){
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return;
+      e.preventDefault();
+      show(tabs[(i + d + tabs.length) % tabs.length].getAttribute('data-t'), true);
+    });
+  });
+  var h = (location.hash || '').slice(1);
+  if (h && document.getElementById('tab-' + h)) show(h);
+})();
+</script>
+
+</body></html>
